@@ -24,7 +24,6 @@ public class ChatFilter {
             bufferedReader = new BufferedReader(fileReader);
 
             ArrayList<String> badWords = new ArrayList<>();
-            String[] messageWords;
 
             String line;
 
@@ -33,14 +32,14 @@ public class ChatFilter {
             }
 
             for (int i = 0; i < badWords.size(); i++) {
-
-
                 if (msg.contains(badWords.get(i))) {
                     for (int k = 0; k < badWords.get(i).length(); k++) {
                         filter += "*";
                     }
 
                     returnMessage = msg.replaceAll(badWords.get(i), filter);
+                } else if (returnMessage.isEmpty()) {
+                    returnMessage = msg;
                 }
 //                    } else if (!returnMessage.contains(messageWords[j])) {
 //                        returnMessage += messageWords[j];

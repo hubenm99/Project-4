@@ -92,6 +92,9 @@ final class ChatServer {
         }
 
         synchronized private void directMessage(String message, String username) {
+//            message = message.substring(message.indexOf(" "), message.length());
+//            message = message.substring(message.indexOf(" "), message.length());
+//            message = message.substring(message.indexOf(" "), message.length());
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss ");
             String finalDate = dateFormat.format(date);
@@ -153,8 +156,12 @@ final class ChatServer {
                         cm = (ChatMessage) sInput.readObject();
 
                         if (cm.getMessage().contains("/msg")) {
-                            directMessage(cm.getRecipient() + " : " + cm.getMessage(), username);
+                            String message = cm.getMessage();
+                            message = message.substring(message.indexOf(cm.getRecipient())
+                                    + cm.getRecipient().length() + 1);
+                            directMessage(cm.getRecipient() + " : " + message + "\n", username);
                             broadcast(username + " : ");
+
                         } else if (cm.getMessage().contains("/list")) {
                             for (int i = 0; i < clients.size(); i++) {
                                 if (!clients.get(i).toString().equals(username)) {
@@ -178,7 +185,7 @@ final class ChatServer {
 //                        e.printStackTrace();
 //                    }
                 }
-            //}
+                //}
 
             } catch (Exception e) {
                 e.printStackTrace();
