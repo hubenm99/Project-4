@@ -7,13 +7,15 @@ final class ChatMessage implements Serializable {
 
     private String message;
     private int typeOfMessage;
+    private String recipient;
 
     // Here is where you should implement the chat message object.
     // Variables, Constructors, Methods, etc.
 
-    public ChatMessage(String message, int typeOfMessage) {
+    public ChatMessage(String message, int typeOfMessage, String recipient) {
         this.message = message;
         this.typeOfMessage = typeOfMessage;
+        this.recipient = recipient;
     }
 
     public String getMessage() {
@@ -22,6 +24,10 @@ final class ChatMessage implements Serializable {
 
     public int getTypeOfMessage() {
         return typeOfMessage;
+    }
+
+    public String getRecipient() {
+        return recipient;
     }
 
 

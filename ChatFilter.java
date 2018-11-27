@@ -1,4 +1,5 @@
 import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 
 public class ChatFilter {
@@ -16,34 +17,35 @@ public class ChatFilter {
 
         try {
             String filter = "";
-
+            badWordsFileName = "badwords.txt";
             // creates a buffered reader by for the bad words text file and message
-            file = new File("NickHuber/IdeaProjects/CS180/Project4/src/badwords.txt");
+            file = new File(badWordsFileName).getAbsoluteFile();
             fileReader = new FileReader(file);
             bufferedReader = new BufferedReader(fileReader);
 
             ArrayList<String> badWords = new ArrayList<>();
             String[] messageWords;
 
-            while (bufferedReader.readLine() != null) {
-                badWords.add(bufferedReader.readLine());
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                badWords.add(line);
             }
-            messageWords = msg.split(msg);
+
+            for (int i = 0; i < badWords.size(); i++) {
 
 
-            for (int i = 0; i < msg.length(); i++) {
-                for (int j = 0; j < messageWords.length; j++) {
-                    if (messageWords[j].equals(badWords.get(i))) {
-                        for (int k = 0; k < messageWords[j].length(); k++) {
-                            filter += "*";
-                        }
-                        returnMessage += filter;
-                    } else {
-                        returnMessage += messageWords[j];
+                if (msg.contains(badWords.get(i))) {
+                    for (int k = 0; k < badWords.get(i).length(); k++) {
+                        filter += "*";
                     }
-                    filter = "";
-                }
 
+                    returnMessage = msg.replaceAll(badWords.get(i), filter);
+                }
+//                    } else if (!returnMessage.contains(messageWords[j])) {
+//                        returnMessage += messageWords[j];
+//                    }
+                filter = "";
             }
 
         } catch (Exception e) {

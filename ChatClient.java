@@ -114,13 +114,13 @@ final class ChatClient {
                     client.sInput.close();
                     client.sOutput.close();
                     client.socket.close();
-                    client.sendMessage(new ChatMessage(input1, 1));
+                    client.sendMessage(new ChatMessage(input1, 1, "Anonymous"));
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                client.sendMessage(new ChatMessage(input1, 0));
+                client.sendMessage(new ChatMessage(input1, 0, "Anonymous"));
             }
         }
     }

@@ -91,6 +91,15 @@ final class ChatServer {
             writeMessage(finalDate +  newMessage);
         }
 
+        synchronized private void directMessage(String message, String username) {
+            Date date = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss ");
+            String finalDate = dateFormat.format(date);
+            ChatFilter filter = new ChatFilter(message);
+            String newMessage = filter.filter(message);
+            writeMessage(finalDate + username + " -> " + newMessage);
+        }
+
         private boolean writeMessage(String message) {
             if (!socket.isConnected()) {
                 return false;
@@ -142,8 +151,20 @@ final class ChatServer {
 
                     try {
                         cm = (ChatMessage) sInput.readObject();
-                        broadcast(username + ": " + cm.getMessage() + "\n");
-                        broadcast(username + ": ");
+
+                        if (cm.getMessage().contains("/msg")) {
+                            directMessage(cm.getRecipient() + " : " + cm.getMessage(), username);
+                            broadcast(username + " : ");
+                        } else if (cm.getMessage().contains("/list")) {
+                            for (int i = 0; i < clients.size(); i++) {
+                                if (!clients.get(i).toString().equals(username)) {
+                                    System.out.println(clients.get(i).toString());
+                                }
+                            }
+                        } else {
+                            broadcast(username + ": " + cm.getMessage() + "\n");
+                            broadcast(username + ": ");
+                        }
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
